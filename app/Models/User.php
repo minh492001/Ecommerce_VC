@@ -52,4 +52,9 @@ class User extends Authenticatable
             ->orderBy('id', 'desc')
             ->get();
     }
+
+    static public function getSingle($id)
+    {
+        return User::find($id);
+    }
 }
