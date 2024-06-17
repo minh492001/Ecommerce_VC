@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
+    public function list()
+    {
+        $data['getRecord'] = Category::getRecord();
+        $data['header_title'] = 'Category';
+        return view('admin.category.list', $data);
+    }
+
     public function add()
     {
         $data['header_title'] = 'Add Category';
