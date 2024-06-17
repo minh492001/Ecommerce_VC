@@ -70,4 +70,11 @@ class SubCategoryController extends Controller
 
         return redirect('admin/sub_category/list')->with('success', 'Sub Category updated successfully !');
     }
+
+    public function delete($id)
+    {
+        $category = SubCategory::getSingle($id);
+        $category->delete();
+        return redirect()->back()->with('success', 'Sub Category deleted successfully !');
+    }
 }
