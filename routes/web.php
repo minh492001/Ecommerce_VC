@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\SubCategoryController;
 
 Route::get('admin', [AuthController::class, 'login_admin']);
 Route::post('admin', [AuthController::class, 'auth_login_admin']);
@@ -36,5 +37,9 @@ Route::group(['middleware' => 'admin'], function () {
 
     Route::get('admin/category/delete/{id}', [CategoryController::class, 'delete']);
 
+//    Sub Category routes
+    Route::get('admin/sub_category/add', [SubCategoryController::class, 'add']);
+
+    Route::post('admin/sub_category/add', [SubCategoryController::class, 'insert']);
 
 });
