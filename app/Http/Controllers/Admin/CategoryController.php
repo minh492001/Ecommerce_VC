@@ -65,4 +65,11 @@ class CategoryController extends Controller
 
         return redirect('admin/category/list')->with('success', 'Category updated successfully !');
     }
+
+    public function delete($id)
+    {
+        $category = Category::getSingle($id);
+        $category->delete();
+        return redirect()->back()->with('success', 'Category deleted successfully !');
+    }
 }
