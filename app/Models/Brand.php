@@ -19,4 +19,8 @@ class Brand extends Model
             ->paginate(10);
     }
 
+    static public function getSingle($id)
+    {
+        return self::find($id);
+    }
 }
