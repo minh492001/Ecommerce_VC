@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\Auth;
 
 class SubCategoryController extends Controller
 {
+    public function list()
+    {
+        $data['getRecord'] = SubCategory::getRecord();
+        $data['header_title'] = 'Sub Category';
+        return view('admin.subCategory.list', $data);
+    }
+
     public function add()
     {
         $data['getCategory'] = Category::getRecord();
