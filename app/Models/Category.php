@@ -15,7 +15,7 @@ class Category extends Model
         return Category::select('category.*', 'users.name as created_by_name')
             ->join('users', 'users.id', '=', 'category.created_by')
             ->orderBy('category.id', 'desc')
-            ->get();
+            ->paginate(10);
     }
 
     static public function getSingle($id)
