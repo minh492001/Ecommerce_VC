@@ -17,4 +17,9 @@ class Category extends Model
             ->orderBy('category.id', 'desc')
             ->get();
     }
+
+    static public function getSingle($id)
+    {
+        return Category::find($id);
+    }
 }

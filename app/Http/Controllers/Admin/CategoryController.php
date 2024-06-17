@@ -40,4 +40,29 @@ class CategoryController extends Controller
 
         return redirect('admin/category/list')->with('success', 'Category added successfully !');
     }
+
+    public function edit($id)
+    {
+        $data['getRecord'] = Category::getSingle($id);
+        $data['header_title'] = 'Edit Category';
+        return view('admin.category.edit', $data);
+    }
+
+    public function update(Request $request, $id)
+    {
+        request()->validate([
+            'slug' => 'required|unique:category,slug,'.$id,
+        ]);
+
+        $category = Category::getSingle($id);
+        $category->name = trim($request->name);
+        $category->slug = trim($request->slug);
+        $category->status = trim($request->status);
+        $category->meta_title = trim($request->meta_title);
+        $category->meta_description = trim($request->meta_description);
+        $category->meta_keywords = trim($request->meta_keywords);
+        $category->save();
+
+        return redirect('admin/category/list')->with('success', 'Category updated successfully !');
+    }
 }
