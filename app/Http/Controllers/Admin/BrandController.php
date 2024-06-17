@@ -65,4 +65,11 @@ class BrandController extends Controller
 
         return redirect('admin/brand/list')->with('success', 'Brand updated successfully !');
     }
+
+    public function delete($id)
+    {
+        $brand = Brand::getSingle($id);
+        $brand->delete();
+        return redirect()->back()->with('success', 'Brand deleted successfully !');
+    }
 }
