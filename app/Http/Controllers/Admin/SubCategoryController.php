@@ -44,4 +44,30 @@ class SubCategoryController extends Controller
         return redirect('admin/sub_category/list')->with('success', 'Sub Category added successfully !');
     }
 
+    public function edit($id)
+    {
+        $data['getCategory'] = Category::getRecord();
+        $data['getRecord'] = SubCategory::getSingle($id);
+        $data['header_title'] = 'Edit Sub Category';
+        return view('admin.subCategory.edit', $data);
+    }
+
+    public function update(Request $request, $id)
+    {
+        request()->validate([
+            'slug' => 'required|unique:sub_category,slug,'.$id
+        ]);
+
+        $subCategory = SubCategory::getSingle($id);
+        $subCategory->category_id = trim($request->category_id);
+        $subCategory->name = trim($request->name);
+        $subCategory->slug = trim($request->slug);
+        $subCategory->status = trim($request->status);
+        $subCategory->meta_title = trim($request->meta_title);
+        $subCategory->meta_description = trim($request->meta_description);
+        $subCategory->meta_keywords = trim($request->meta_keywords);
+        $subCategory->save();
+
+        return redirect('admin/sub_category/list')->with('success', 'Sub Category updated successfully !');
+    }
 }

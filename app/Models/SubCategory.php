@@ -19,4 +19,9 @@ class SubCategory extends Model
             ->orderBy('sub_category.id', 'desc')
             ->paginate(10);
     }
+
+    static public function getSingle($id)
+    {
+        return SubCategory::find($id);
+    }
 }
