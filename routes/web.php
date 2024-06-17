@@ -42,4 +42,6 @@ Route::group(['middleware' => 'admin'], function () {
 
     Route::post('admin/sub_category/add', [SubCategoryController::class, 'insert']);
 
+    Route::get('admin/sub_category/list', [SubCategoryController::class, 'list']);
+
 });
