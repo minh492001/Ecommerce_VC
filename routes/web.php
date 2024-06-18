@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\ColorController;
 
 Route::get('admin', [AuthController::class, 'login_admin']);
 Route::post('admin', [AuthController::class, 'auth_login_admin']);
@@ -58,4 +59,16 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('admin/brand/edit/{id}', [BrandController::class, 'update']);
 
     Route::get('admin/brand/delete/{id}', [BrandController::class, 'delete']);
+
+//    Color routes
+    Route::get('admin/color/list', [ColorController::class, 'list']);
+
+    Route::get('admin/color/add', [ColorController::class, 'add']);
+    Route::post('admin/color/add', [ColorController::class, 'insert']);
+
+    Route::get('admin/color/edit/{id}', [ColorController::class, 'edit']);
+    Route::post('admin/color/edit/{id}', [ColorController::class, 'update']);
+
+    Route::get('admin/color/delete/{id}', [ColorController::class, 'delete']);
+
 });
