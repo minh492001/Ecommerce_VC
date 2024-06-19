@@ -18,4 +18,9 @@ class Product extends Model
             ->orderBy('product.id', 'DESC')
             ->paginate(10);
     }
+
+    static public function checkSlug($slug)
+    {
+        return Product::where("slug", "=", $slug)->count();
+    }
 }
