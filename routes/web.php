@@ -49,6 +49,8 @@ Route::group(['middleware' => 'admin'], function () {
 
     Route::get('admin/sub_category/delete/{id}', [SubCategoryController::class, 'delete']);
 
+    Route::post('admin/get_sub_category', [SubCategoryController::class, 'get_sub_category']);
+
 //    Brand routes
     Route::get('admin/brand/list', [BrandController::class, 'list']);
 
@@ -73,5 +75,8 @@ Route::group(['middleware' => 'admin'], function () {
 
 //    Product routes
     Route::get('admin/product/list', [ProductController::class, 'list']);
+
+    Route::get('admin/product/add', [ProductController::class, 'add']);
+    Route::post('admin/product/add', [ProductController::class, 'insert']);
 
 });
