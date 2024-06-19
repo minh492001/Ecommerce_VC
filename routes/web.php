@@ -71,4 +71,7 @@ Route::group(['middleware' => 'admin'], function () {
 
     Route::get('admin/color/delete/{id}', [ColorController::class, 'delete']);
 
+//    Product routes
+    Route::get('admin/product/list', [ProductController::class, 'list']);
+
 });
