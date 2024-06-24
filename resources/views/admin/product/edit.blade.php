@@ -198,7 +198,22 @@
 @endsection
 
 @section('script')
+    <script src="https://cdn.tiny.cloud/1/jxcth939yx7b1jm7h09xerf08nydmgo26avhr9n9pklhxbpz/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="{{ url('public/tinyMCE/tinymce-jquery.min.js') }}"></script>
     <script type="text/javascript">
+
+        $('.editor').tinymce({
+            height: 500,
+            menubar: false,
+            plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                'anchor', 'searchreplace', 'visualblocks', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+            ],
+            toolbar: 'undo redo | blocks | bold italic backcolor | ' +
+                'alignleft aligncenter alignright alignjustify | ' +
+                'bullist numlist outdent indent | removeformat | help'
+        });
 
     let i = 1000;
     $('body').delegate('.AddSize', 'click', function () {
