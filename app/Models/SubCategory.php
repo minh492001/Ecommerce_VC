@@ -24,4 +24,14 @@ class SubCategory extends Model
     {
         return SubCategory::find($id);
     }
+
+    static public function getRecordSubCategory($id)
+    {
+        return SubCategory::select('sub_category.*')
+            ->join('users', 'users.id', '=', 'sub_category.created_by')
+            ->where('sub_category.status', "=", 0)
+            ->where('sub_category.category_id', "=", $id)
+            ->orderBy('sub_category.name', 'asc')
+            ->get();
+    }
 }

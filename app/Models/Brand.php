@@ -23,4 +23,13 @@ class Brand extends Model
     {
         return self::find($id);
     }
+
+    static public function getRecordActive()
+    {
+        return self::select('brand.*')
+            ->join('users', 'users.id', '=', 'brand.created_by')
+            ->where('brand.status', '=', 0)
+            ->orderBy('brand.name', 'asc')
+            ->get();
+    }
 }

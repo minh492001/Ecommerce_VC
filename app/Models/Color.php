@@ -23,4 +23,13 @@ class Color extends Model
     {
         return self::find($id);
     }
+
+    static public function getRecordActive()
+    {
+        return self::select('color.*')
+            ->join('users', 'users.id', '=', 'color.created_by')
+            ->where('color.status', '=', 0)
+            ->orderBy('color.name', 'asc')
+            ->paginate(10);
+    }
 }
