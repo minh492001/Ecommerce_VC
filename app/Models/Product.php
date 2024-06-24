@@ -28,4 +28,9 @@ class Product extends Model
     {
         return Product::find($id);
     }
+
+    public function getColor()
+    {
+        return $this->hasMany(ProductColor::class, 'product_id');
+    }
 }
