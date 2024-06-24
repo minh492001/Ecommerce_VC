@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Color;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Product;
@@ -44,5 +47,18 @@ class ProductController extends Controller
         }
 
         return redirect('admin/product/edit/'.$product->id);
+    }
+
+    public function edit($product_id)
+    {
+        $product = Product::getSingle($product_id);
+        if (!empty($product)) {
+            $data['getCategory'] = Category::getRecordActive();
+            $data['getBrand'] = Brand::getRecordActive();
+            $data['getColor'] = Color::getRecordActive();
+            $data['product'] = $product;
+            $data['header_title'] = 'Edit Product';
+            return view('admin.product.edit', $data);
+        }
     }
 }

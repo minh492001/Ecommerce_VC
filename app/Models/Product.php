@@ -23,4 +23,9 @@ class Product extends Model
     {
         return Product::where("slug", "=", $slug)->count();
     }
+
+    static public function getSingle($id)
+    {
+        return Product::find($id);
+    }
 }

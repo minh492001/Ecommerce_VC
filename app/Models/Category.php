@@ -22,4 +22,13 @@ class Category extends Model
     {
         return Category::find($id);
     }
+
+    static public function getRecordActive()
+    {
+        return Category::select('category.*')
+            ->join('users', 'users.id', '=', 'category.created_by')
+            ->where('category.status', '=', 0)
+            ->orderBy('category.name', 'asc')
+            ->paginate(10);
+    }
 }
