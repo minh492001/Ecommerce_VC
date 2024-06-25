@@ -19,7 +19,7 @@
                     <div class="col-md-12">
                         @include('admin.layouts._message')
                         <div class="card card-primary">
-                            <form action="" method="post">
+                            <form action="" method="post" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <div class="card-body">
                                     <div class="row">
@@ -158,6 +158,17 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="short_des">Image</label>
+                                                <input type="file" name="image[]" multiple class="form-control" style="padding: 5px" accept="image/*">
                                             </div>
                                         </div>
                                     </div>
