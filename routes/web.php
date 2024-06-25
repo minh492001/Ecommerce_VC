@@ -82,4 +82,8 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('admin/product/edit/{id}', [ProductController::class, 'edit']);
     Route::post('admin/product/edit/{id}', [ProductController::class, 'update']);
 
+//    Delete Product Image
+    Route::get('admin/product/image_delete/{id}', [ProductController::class, 'image_delete']);
+
+
 });
