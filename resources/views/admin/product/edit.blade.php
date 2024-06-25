@@ -173,6 +173,19 @@
                                         </div>
                                     </div>
 
+                                    @if(!empty($product->getImage->count()))
+                                        <div class="row">
+                                            @foreach($product->getImage as $image)
+                                                @if(!empty($image->getImage()))
+                                                    <div class="col-md-1" style="text-align: center;">
+                                                        <img style="width: 100%; height: 100px;" src="{{ $image->getImage() }}">
+                                                        <a onclick="return confirm('Are you sure want to delete ?')" style="margin-top: 10px" href="{{ url('admin/product/image_delete/'.$image->id) }}" class="btn btn-danger btn-sm">Delete</a>
+                                                    </div>
+                                                @endif
+                                            @endforeach
+                                        </div>
+                                    @endif
+
                                     <hr>
 
                                     <div class="row">
