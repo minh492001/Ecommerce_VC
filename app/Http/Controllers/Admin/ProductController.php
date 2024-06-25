@@ -7,6 +7,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\ProductColor;
+use App\Models\ProductImage;
 use App\Models\ProductSize;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
@@ -109,6 +110,22 @@ class ProductController extends Controller
                 }
             }
 
+            if (!empty($request->file('image'))) {
+                foreach($request->file('image') as $value) {
+                    if ($value->isValid()) {
+                        $ext = $value->getClientOriginalExtension();
+                        $randomStr = $product->id.Str::random(20);
+                        $fileName = strtolower($randomStr).'.'.$ext;
+                        $value->move('upload/product/', $fileName);
+
+                        $imageUpload = new ProductImage;
+                        $imageUpload->image_name = $fileName;
+                        $imageUpload->image_extension = $ext;
+                        $imageUpload->product_id = $product->id;
+                        $imageUpload->save();
+                    }
+                }
+            }
 
             return redirect()->back()->with('success', 'Product updated successfully');
         } else {
