@@ -131,6 +131,16 @@ class ProductController extends Controller
         } else {
             abort(404);
         }
-        dd($request->all());
+    }
+
+    public function image_delete($id)
+    {
+        $image = ProductImage::getSingle($id);
+        if(!empty($image->getImage())) {
+            unlink('upload/product/'.$image->image_name);
+        }
+        $image->delete();
+
+        return redirect()->back()->with('success', 'Image deleted successfully');
     }
 }
