@@ -7,6 +7,8 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\ProductColor;
+use App\Models\ProductImage;
+use App\Models\ProductSize;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -94,10 +96,51 @@ class ProductController extends Controller
                 }
             }
 
+            ProductSize::DeleteRecord($product->id);
+
+            if (!empty($request->size)) {
+                foreach ($request->size as $size) {
+                    if (!empty($size['name'])) {
+                        $product_size = new ProductSize;
+                        $product_size->name = $size['name'];
+                        $product_size->price = !empty($size['price']) ? $size['price'] : 0;
+                        $product_size->product_id = $product->id;
+                        $product_size->save();
+                    }
+                }
+            }
+
+            if (!empty($request->file('image'))) {
+                foreach($request->file('image') as $value) {
+                    if ($value->isValid()) {
+                        $ext = $value->getClientOriginalExtension();
+                        $randomStr = $product->id.Str::random(20);
+                        $fileName = strtolower($randomStr).'.'.$ext;
+                        $value->move('upload/product/', $fileName);
+
+                        $imageUpload = new ProductImage;
+                        $imageUpload->image_name = $fileName;
+                        $imageUpload->image_extension = $ext;
+                        $imageUpload->product_id = $product->id;
+                        $imageUpload->save();
+                    }
+                }
+            }
+
             return redirect()->back()->with('success', 'Product updated successfully');
         } else {
             abort(404);
         }
-        dd($request->all());
+    }
+
+    public function image_delete($id)
+    {
+        $image = ProductImage::getSingle($id);
+        if(!empty($image->getImage())) {
+            unlink('upload/product/'.$image->image_name);
+        }
+        $image->delete();
+
+        return redirect()->back()->with('success', 'Image deleted successfully');
     }
 }

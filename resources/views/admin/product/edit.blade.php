@@ -19,7 +19,7 @@
                     <div class="col-md-12">
                         @include('admin.layouts._message')
                         <div class="card card-primary">
-                            <form action="" method="post">
+                            <form action="" method="post" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <div class="card-body">
                                     <div class="row">
@@ -103,14 +103,14 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="price">Price ($) <span style="color: red">*</span></label>
-                                                <input type="text" class="form-control" id="price" required value="{{ $product->price }}" name="price" placeholder="Enter Price">
+                                                <input type="text" class="form-control" id="price" required value="{{ !empty($product->price) ? $product->price : '' }}" name="price" placeholder="Enter Price">
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="old_price">Old Price ($) <span style="color: red">*</span></label>
-                                                <input type="text" class="form-control" id="old_price" required value="{{ $product->old_price }}" name="old_price" placeholder="Old Price">
+                                                <input type="text" class="form-control" id="old_price" required value="{{ !empty($product->old_price) ? $product->old_price : '' }}" name="old_price" placeholder="Old Price">
                                             </div>
                                         </div>
                                     </div>
@@ -129,19 +129,62 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody id="AppendSize">
-                                                            <tr>
-                                                                <td><input type="text" name="" placeholder="Name" class="form-control"></td>
-                                                                <td><input type="text" name="" placeholder="Price" class="form-control"></td>
+                                                        @php
+                                                            $i_s = 1;
+                                                        @endphp
+                                                        @foreach($product->getSize as $size)
+                                                            <tr id="DeleteSize{{ $i_s }}">
+                                                                <td><input type="text" value="{{ $size->name }}" name="size[{{ $i_s }}][name]" placeholder="Name" class="form-control"></td>
+                                                                <td><input type="text" value="{{ $size->price }}" name="size[{{ $i_s }}][price]" placeholder="Price" class="form-control"></td>
                                                                 <td style="width: 200px">
-                                                                    <button type="button" class="btn btn-primary AddSize">Add</button>
+                                                                    <button type="button" id="{{ $i_s }}" class="btn btn-danger DeleteSize">Delete</button>
                                                                 </td>
                                                             </tr>
+                                                            @php
+                                                                $i_s++;
+                                                            @endphp
+                                                        @endforeach
+                                                        <tr>
+                                                            <td>
+                                                                <input type="text" name="size[100][name]" placeholder="Name" class="form-control">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" name="size[100][price]" placeholder="Price" class="form-control">
+                                                            </td>
+                                                            <td style="width: 200px;">
+                                                                <button type="button" class="btn btn-primary AddSize">Add</button>
+                                                            </td>
+                                                        </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <hr>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="short_des">Image</label>
+                                                <input type="file" name="image[]" multiple class="form-control" style="padding: 5px" accept="image/*">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @if(!empty($product->getImage->count()))
+                                        <div class="row">
+                                            @foreach($product->getImage as $image)
+                                                @if(!empty($image->getImage()))
+                                                    <div class="col-md-1" style="text-align: center;">
+                                                        <img style="width: 100%; height: 100px;" src="{{ $image->getImage() }}">
+                                                        <a onclick="return confirm('Are you sure want to delete ?')" style="margin-top: 10px" href="{{ url('admin/product/image_delete/'.$image->id) }}" class="btn btn-danger btn-sm">Delete</a>
+                                                    </div>
+                                                @endif
+                                            @endforeach
+                                        </div>
+                                    @endif
 
                                     <hr>
 
@@ -229,14 +272,14 @@
                 'bullist numlist outdent indent | removeformat | help'
         });
 
-    let i = 1000;
+    let i = 101;
     $('body').delegate('.AddSize', 'click', function () {
         let html = '<tr id="DeleteSize'+i+'">\n\
                         <td>\n\
-                            <input type="text" name="" placeholder="Name" class="form-control">\n\
+                            <input type="text" name="size['+i+'][name]" placeholder="Name" class="form-control">\n\
                         </td>\n\
                         <td>\n\
-                            <input type="text" name="" placeholder="Price" class="form-control">\n\
+                            <input type="text" name="size['+i+'][price]" placeholder="Price" class="form-control">\n\
                         </td>\n\
                         <td>\n\
                             <button type="button" id="'+i+'" class="btn btn-danger DeleteSize">Delete</button>\n\
