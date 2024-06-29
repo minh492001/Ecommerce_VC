@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -84,6 +85,9 @@ Route::group(['middleware' => 'admin'], function () {
 
 //    Delete Product Image
     Route::get('admin/product/image_delete/{id}', [ProductController::class, 'image_delete']);
+
+//    Home route
+    Route::get('/', [HomeController::class, 'home']);
 
 
 });

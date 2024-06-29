@@ -104,7 +104,7 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="https://vccorp.vn/san-pham-dich-vu.htm" class="brand-link" style="text-align: center">
+    <a href={{ url('/') }} class="brand-link" style="text-align: center">
         <span class="brand-text">Ecommerce_VC</span>
     </a>
 
