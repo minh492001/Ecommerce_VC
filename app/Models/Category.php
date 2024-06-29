@@ -31,4 +31,18 @@ class Category extends Model
             ->orderBy('category.name', 'asc')
             ->paginate(10);
     }
+
+    static public function getRecordMenu()
+    {
+        return Category::select('category.*')
+            ->join('users', 'users.id', '=', 'category.created_by')
+            ->where('category.status', '=', 0)
+            ->get();
+    }
+
+    public function getSubCategory()
+    {
+        return $this->hasMany(SubCategory::class, 'category_id')
+            ->where('sub_category.status', '=', 0);
+    }
 }
