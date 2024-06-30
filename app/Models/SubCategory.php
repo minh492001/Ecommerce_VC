@@ -25,6 +25,13 @@ class SubCategory extends Model
         return SubCategory::find($id);
     }
 
+    static public function getSingleSlug($slug)
+    {
+        return SubCategory::where('slug', '=', $slug)
+            ->where('sub_category.status', '=', 0)
+            ->first();
+    }
+
     static public function getRecordSubCategory($id)
     {
         return SubCategory::select('sub_category.*')
