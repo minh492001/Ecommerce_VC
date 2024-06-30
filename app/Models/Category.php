@@ -23,6 +23,13 @@ class Category extends Model
         return Category::find($id);
     }
 
+    static public function getSingleSlug($slug)
+    {
+        return Category::where('slug', '=', $slug)
+            ->where('category.status', '=', 0)
+            ->first();
+    }
+
     static public function getRecordActive()
     {
         return Category::select('category.*')
