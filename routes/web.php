@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ColorController;
+use App\Http\Controllers\ProductController as ProductFront;
 
 Route::get('admin', [AuthController::class, 'login_admin']);
 Route::post('admin', [AuthController::class, 'auth_login_admin']);
@@ -88,6 +89,7 @@ Route::group(['middleware' => 'admin'], function () {
 
 //    Home route
     Route::get('/', [HomeController::class, 'home']);
+    Route::get('{slug?}', [ProductFront::class, 'getCategory']);
 
 
 });
