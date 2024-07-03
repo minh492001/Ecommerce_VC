@@ -91,5 +91,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/', [HomeController::class, 'home']);
     Route::get('{category?}/{subcategory?}', [ProductFront::class, 'getSlug']);
 
+//    Filters Product Listing route
+    Route::post('get_filter_product_ajax', [ProductFront::class, 'getFilterProduct']);
 
 });
