@@ -41,4 +41,11 @@ class SubCategory extends Model
             ->orderBy('sub_category.name', 'asc')
             ->get();
     }
+
+    public function TotalProduct()
+    {
+        return $this->hasMany(Product::class, 'sub_category_id')
+            ->where('product.status', '=', 0)
+            ->count();
+    }
 }
