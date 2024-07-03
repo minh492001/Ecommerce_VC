@@ -67,10 +67,14 @@
                     <aside class="col-lg-3 order-lg-first">
                         <form id="FilterForm" method="post" action="">
                             {{ csrf_field() }}
+                            <input type="hidden" name="old_sub_category_id" value="{{ !empty($getSubCategory) ? $getSubCategory->id : '' }}">
+                            <input type="hidden" name="old_category_id" value="{{ !empty($getCategory) ? $getCategory->id : '' }}">
                             <input type="hidden" name="sub_category_id" id="get_sub_category_id">
                             <input type="hidden" name="brand_id" id="get_brand_id">
                             <input type="hidden" name="color_id" id="get_color_id">
                             <input type="hidden" name="sort_by_id" id="get_sort_by_id">
+                            <input type="hidden" name="start_price" id="get_start_price">
+                            <input type="hidden" name="end_price" id="get_end_price">
                         </form>
                         <div class="sidebar sidebar-shop">
                             <div class="widget widget-clean">
@@ -288,8 +292,12 @@
             FilterForm();
         });
 
+        let xhr ;
         function FilterForm() {
-            $.ajax({
+            if (xhr && xhr.readyState != 4) {
+                xhr.abort();
+            }
+            xhr = $.ajax({
                 type : "POST",
                 url : "{{ url('get_filter_product_ajax') }}",
                 data : $('#FilterForm').serialize(),
@@ -301,6 +309,43 @@
 
                 }
             })
+        }
+
+        let i = 0
+
+        // Slider For category pages / filter price
+        if ( typeof noUiSlider === 'object' ) {
+            var priceSlider  = document.getElementById('price-slider');
+
+            noUiSlider.create(priceSlider, {
+                start: [ 0, 750 ],
+                connect: true,
+                step: 50,
+                margin: 50,
+                range: {
+                    'min': 0,
+                    'max': 1000
+                },
+                tooltips: true,
+                format: wNumb({
+                    decimals: 0,
+                    prefix: '$'
+                })
+            });
+
+            // Update Price Range
+            priceSlider.noUiSlider.on('update', function( values, handle ){
+                let start_price = values[0];
+                let end_price = values[1];
+                $('#get_start_price').val(start_price);
+                $('#get_end_price').val(end_price);
+                $('#filter-price-range').text(values.join(' - '));
+                if(i == 0 || i == 1) {
+                    i++
+                } else {
+                    FilterForm();
+                }
+            });
         }
     </script>
 @endsection
