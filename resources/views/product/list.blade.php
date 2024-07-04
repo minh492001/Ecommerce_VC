@@ -40,7 +40,7 @@
                         <div class="toolbox">
                             <div class="toolbox-left">
                                 <div class="toolbox-info">
-                                    Showing <span>9 of 56</span> Products
+                                    Showing <span>{{ $getProduct->perPage() }} of {{ $getProduct->total() }}</span> Products
                                 </div><!-- End .toolbox-info -->
                             </div><!-- End .toolbox-left -->
 
@@ -61,6 +61,10 @@
                         </div><!-- End .toolbox -->
                     <div id="getProductAjax">
                         @include('product._list')
+                    </div>
+
+                    <div style="text-align: center">
+                        <a href="javascript:" @if(empty($page)) style="display: none" @endif data-page="{{ $page }}" class="btn btn-primary LoadMore">Load More</a>
                     </div>
 
                     </div><!-- End .col-lg-9 -->
@@ -304,6 +308,13 @@
                 dataType : "json",
                 success : function (data) {
                     $('#getProductAjax').html(data.success)
+                    $('.LoadMore').attr('data-page', data.page)
+
+                    if(data.page == 0) {
+                        $('.LoadMore').hide()
+                    } else {
+                        $('.LoadMore').show()
+                    }
                 },
                 error : function (data) {
 
@@ -311,11 +322,41 @@
             })
         }
 
+        // Pagination using AJAX
+        $('body').delegate('.LoadMore', 'click', function () {
+            let page = $(this).attr('data-page');
+            $('.LoadMore').html('Loading ...')
+
+            if (xhr && xhr.readyState != 4) {
+                xhr.abort();
+            }
+            xhr = $.ajax({
+                type : "POST",
+                url : "{{ url('get_filter_product_ajax') }}?page="+page,
+                data : $('#FilterForm').serialize(),
+                dataType : "json",
+                success : function (data) {
+                    $('#getProductAjax').append(data.success)
+                    $('.LoadMore').attr('data-page', data.page)
+                    $('.LoadMore').html('Load More')
+
+                    if(data.page == 0) {
+                        $('.LoadMore').hide()
+                    } else {
+                        $('.LoadMore').show()
+                    }
+                },
+                error : function (data) {
+
+                }
+            })
+        });
+
         let i = 0
 
         // Slider For category pages / filter price
         if ( typeof noUiSlider === 'object' ) {
-            var priceSlider  = document.getElementById('price-slider');
+            let priceSlider  = document.getElementById('price-slider');
 
             noUiSlider.create(priceSlider, {
                 start: [ 0, 750 ],
