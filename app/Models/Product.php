@@ -72,7 +72,7 @@ class Product extends Model
             $product = $product->where('product.status', '=', 0)
                 ->groupBy('product.id')
                 ->orderBy('product.id', 'DESC')
-                ->paginate(10);
+                ->paginate(3);
 
         return $product;
     }
