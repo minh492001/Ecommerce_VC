@@ -90,6 +90,9 @@ Route::group(['middleware' => 'admin'], function () {
 //    Home route
     Route::get('/', [HomeController::class, 'home']);
 
+//    Search route
+    Route::get('search', [ProductFront::class, 'searchProduct']);
+
 //    Product with slug route
     Route::get('{category?}/{subcategory?}', [ProductFront::class, 'getSlug']);
 
