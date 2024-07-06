@@ -89,6 +89,8 @@ Route::group(['middleware' => 'admin'], function () {
 
 //    Home route
     Route::get('/', [HomeController::class, 'home']);
+
+//    Product with slug route
     Route::get('{category?}/{subcategory?}', [ProductFront::class, 'getSlug']);
 
 //    Filters Product Listing route
