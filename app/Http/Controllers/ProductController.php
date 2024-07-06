@@ -105,4 +105,29 @@ class ProductController extends Controller
             ])->render(),
         ], 200);
     }
+
+    public function searchProduct(Request $request)
+    {
+        $data['meta_title'] = 'Search';
+        $data['meta_description'] = '';
+        $data['meta_keywords'] = '';
+
+        $getProduct = Product::getProduct();
+        $data['getProduct'] = $getProduct;
+        $data['getColor'] = Color::getRecordActive();
+        $data['getBrand'] = Brand::getRecordActive();
+
+        // Pagination using AJAX
+        $page = 0;
+        if (!empty($getProduct->nextPageUrl())) {
+            $parse_url = parse_url($getProduct->nextPageUrl());
+            if (!empty($parse_url['query'])) {
+                parse_str($parse_url['query'], $get_array);
+                $page = !empty($get_array['page']) ? $get_array['page'] : 0;
+            }
+        }
+        $data['page'] = $page;
+
+        return view('product.list', $data);
+    }
 }
