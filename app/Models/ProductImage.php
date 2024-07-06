@@ -23,6 +23,5 @@ class ProductImage extends Model
         } else {
             return "";
         }
-
     }
 }
