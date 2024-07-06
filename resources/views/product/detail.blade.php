@@ -59,7 +59,7 @@
                                 </div><!-- End .rating-container -->
 
                                 <div class="product-price">
-                                    ${{ number_format($getProduct->price, 2) }}
+                                    $<span id="getTotalPrice">{{ number_format($getProduct->price, 2) }}</span>
                                 </div><!-- End .product-price -->
 
                                 <div class="product-content">
@@ -84,10 +84,10 @@
                                 <div class="details-filter-row details-row-size">
                                     <label for="size">Size:</label>
                                     <div class="select-custom">
-                                        <select name="size" id="size" class="form-control">
-                                            <option value="">Select a size</option>
+                                        <select name="size" id="size" class="form-control getSizePrice">
+                                            <option data-price="0" value="">Select a size</option>
                                             @foreach($getProduct->getSize as $size)
-                                                <option value="{{ $size->id }}">{{ $size->name }} @if(!empty($size->price)) (${{ number_format($size->price, 2) }}) @endif</option>
+                                                <option data-price="{{ !empty($size->price) ? $size->price : 0 }}" value="{{ $size->id }}">{{ $size->name }} @if(!empty($size->price)) (${{ number_format($size->price, 2) }}) @endif</option>
                                             @endforeach
                                         </select>
                                     </div><!-- End .select-custom -->
@@ -313,4 +313,12 @@
 @section('script')
     <script src="{{ url('assets/js/bootstrap-input-spinner.js') }}"></script>
     <script src="{{ url('assets/js/jquery.elevateZoom.min.js') }}"></script>
+    <script type="text/javascript">
+        $('.getSizePrice').change(function () {
+            let product_price = '{{ $getProduct->price }}'
+            let price = $('option:selected', this).attr('data-price')
+            let total = parseFloat(product_price) + parseFloat(price)
+            $('#getTotalPrice').html(total.toFixed(2))
+        })
+    </script>
 @endsection
