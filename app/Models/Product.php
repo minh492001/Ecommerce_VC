@@ -91,6 +91,43 @@ class Product extends Model
         return Product::find($id);
     }
 
+//    Get Product Slug
+    static public function getSingleSlug($slug)
+    {
+        return Product::where('slug', '=', $slug)
+            ->where('product.status', '=', 0)
+            ->first();
+    }
+
+    static public function getRelatedProduct($product_id, $sub_category_id)
+    {
+        $product = Product::select('product.*', 'users.name as created_by_name', 'category.name as category_name', 'category.slug as category_slug', 'sub_category.name as sub_category_name', 'sub_category.slug as sub_category_slug')
+            ->join('users', 'users.id', '=', 'product.created_by')
+            ->join('category', 'category.id', '=', 'product.category_id')
+            ->join('sub_category', 'sub_category.id', '=', 'product.sub_category_id')
+            ->where('product.id', '!=', $product_id)
+            ->where('product.sub_category_id', '=', $sub_category_id)
+            ->where('product.status', '=', 0)
+            ->groupBy('product.id')
+            ->orderBy('product.id', 'DESC')
+            ->limit(10)
+            ->get();
+
+        return $product;
+    }
+
+//    Eloquent ORM to show the relationship between product and category
+    public function getCategory()
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
+
+//    Eloquent ORM to show the relationship between product and sub_category
+    public function getSubCategory()
+    {
+        return $this->belongsTo(SubCategory::class, 'sub_category_id', 'id');
+    }
+
     public function getColor()
     {
         return $this->hasMany(ProductColor::class, 'product_id');
