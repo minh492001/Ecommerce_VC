@@ -152,21 +152,21 @@
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel" aria-labelledby="product-desc-link">
                         <div class="product-desc-content">
-                            <div class="container">
+                            <div class="container" style="margin-top: 20px">
                                 {!! $getProduct->description !!}
                             </div><!-- End .container -->
                         </div><!-- End .product-desc-content -->
                     </div><!-- .End .tab-pane -->
                     <div class="tab-pane fade" id="product-info-tab" role="tabpanel" aria-labelledby="product-info-link">
                         <div class="product-desc-content">
-                            <div class="container">
+                            <div class="container" style="margin-top: 20px">
                                 {!! $getProduct->additional_information !!}
                             </div><!-- End .container -->
                         </div><!-- End .product-desc-content -->
                     </div><!-- .End .tab-pane -->
                     <div class="tab-pane fade" id="product-shipping-tab" role="tabpanel" aria-labelledby="product-shipping-link">
                         <div class="product-desc-content">
-                            <div class="container">
+                            <div class="container" style="margin-top: 20px">
                                 {!! $getProduct->shipping_returns !!}
                             </div><!-- End .container -->
                         </div><!-- End .product-desc-content -->
@@ -287,11 +287,11 @@
 
                         <div class="product-body">
                             <div class="product-cat">
-                                <a href="#">Women</a>
+                                <a href="{{ url($product->category_slug.'/'.$product->sub_category_slug) }}">{{ $product->sub_category_name }}</a>
                             </div><!-- End .product-cat -->
-                            <h3 class="product-title"><a href="product.html">Brown paperbag waist <br>pencil skirt</a></h3><!-- End .product-title -->
+                            <h3 class="product-title"><a href="{{ url($product->slug) }}">{{ $product->title }}</a></h3><!-- End .product-title -->
                             <div class="product-price">
-                                $60.00
+                                ${{ number_format($product->price, 2) }}
                             </div><!-- End .product-price -->
                             <div class="ratings-container">
                                 <div class="ratings">
@@ -300,11 +300,6 @@
                                 <span class="ratings-text">( 2 Reviews )</span>
                             </div><!-- End .rating-container -->
 
-                            <div class="product-nav product-nav-dots">
-                                <a href="#" class="active" style="background: #cc9966;"><span class="sr-only">Color name</span></a>
-                                <a href="#" style="background: #7fc5ed;"><span class="sr-only">Color name</span></a>
-                                <a href="#" style="background: #e8c97a;"><span class="sr-only">Color name</span></a>
-                            </div><!-- End .product-nav -->
                         </div><!-- End .product-body -->
                     </div><!-- End .product -->
                     @endforeach
