@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -99,4 +100,6 @@ Route::group(['middleware' => 'admin'], function () {
 //    Filters Product Listing route
     Route::post('get_filter_product_ajax', [ProductFront::class, 'getFilterProduct']);
 
+//    Add to Cart route
+    Route::post('product/add-to-cart', [PaymentController::class, 'add_to_cart']);
 });
