@@ -69,6 +69,10 @@ class Product extends Model
                 $product = $product->where('product.price', '<=', $end_price);
             }
 
+            if (!empty(Request::get('search'))) {
+                $product = $product->where('product.title', 'like', '%'.Request::get('search').'%');
+            }
+
             $product = $product->where('product.status', '=', 0)
                 ->groupBy('product.id')
                 ->orderBy('product.id', 'DESC')

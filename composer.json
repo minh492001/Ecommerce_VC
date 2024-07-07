@@ -11,7 +11,14 @@
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "maatwebsite/excel": "^1.1",
-        "stripe/stripe-php": "^14.9"
+        "stripe/stripe-php": "^14.9",
+        "darryldecode/cart": "dev-master"
+    },
+    "repositories": {
+        "repo-name": {
+            "type": "vcs",
+            "url": "git@github.com:minh492001/laravelshoppingcart.git"
+        }
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

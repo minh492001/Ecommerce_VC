@@ -157,7 +157,7 @@
                     <form action="{{ url('search') }}" method="get">
                         <div class="header-search-wrapper">
                             <label for="q" class="sr-only">Search</label>
-                            <input type="search" class="form-control" name="q" id="q" placeholder="Search in..." required>
+                            <input type="search" class="form-control" value="{{ !empty(Request::get('search')) ? Request::get('search') : ''  }}" name="search" id="q" placeholder="Search in..." required>
                         </div>
                     </form>
                 </div>
