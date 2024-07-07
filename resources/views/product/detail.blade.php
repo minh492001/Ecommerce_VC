@@ -66,11 +66,14 @@
                                     <p>{{ $getProduct->short_description }}</p>
                                 </div><!-- End .product-content -->
 
+                            <form action="{{ url('product/add-to-cart') }}" method="post">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="product_id" value="{{ $getProduct->id }}">
                                 @if(!empty($getProduct->getColor->count()))
                                     <div class="details-filter-row details-row-size">
-                                        <label for="size">Color:</label>
+                                        <label for="color_id">Color:</label>
                                         <div class="select-custom">
-                                            <select name="size" id="size" class="form-control">
+                                            <select name="color_id" id="color_id" required  class="form-control">
                                                 <option value="">Select color</option>
                                                 @foreach($getProduct->getColor as $color)
                                                     <option value="{{ $color->getColor->id }}">{{ $color->getColor->name }}</option>
@@ -82,9 +85,9 @@
 
                                 @if(!empty($getProduct->getSize->count()))
                                 <div class="details-filter-row details-row-size">
-                                    <label for="size">Size:</label>
+                                    <label for="size_id">Size:</label>
                                     <div class="select-custom">
-                                        <select name="size" id="size" class="form-control getSizePrice">
+                                        <select name="size_id" id="size_id" required class="form-control getSizePrice">
                                             <option data-price="0" value="">Select a size</option>
                                             @foreach($getProduct->getSize as $size)
                                                 <option data-price="{{ !empty($size->price) ? $size->price : 0 }}" value="{{ $size->id }}">{{ $size->name }} @if(!empty($size->price)) (${{ number_format($size->price, 2) }}) @endif</option>
@@ -97,18 +100,19 @@
                                 <div class="details-filter-row details-row-size">
                                     <label for="qty">Qty:</label>
                                     <div class="product-details-quantity">
-                                        <input type="number" id="qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
+                                        <input type="number" id="qty" class="form-control" value="1" min="1" max="100" name="qty" step="1" data-decimals="0" required>
                                     </div><!-- End .product-details-quantity -->
                                 </div><!-- End .details-filter-row -->
 
                                 <div class="product-details-action">
-                                    <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                    <button style="background: #fff; color: #c96" type="submit" class="btn-product btn-cart"><span>add to cart</span></button>
 
                                     <div class="details-action-wrapper">
                                         <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
 {{--                                        <a href="#" class="btn-product btn-compare" title="Compare"><span>Add to Compare</span></a>--}}
                                     </div><!-- End .details-action-wrapper -->
                                 </div><!-- End .product-details-action -->
+                            </form>
 
                                 <div class="product-details-footer">
                                     <div class="product-cat">
