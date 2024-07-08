@@ -187,6 +187,15 @@
                 </li>
 
                 <li class="nav-item">
+                    <a href="{{ url('admin/discount_code/list') }}" class="nav-link @if(Request::segment(2) == "discount_code") active @endif">
+                        <i class="nav-icon fas fa-list-alt"></i>
+                        <p>
+                            Discount
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a href="{{ url('admin/logout') }}" class="nav-link">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>
