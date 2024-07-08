@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-12">
-                        <h1>Add New Color</h1>
+                        <h1>Add New Discount Code</h1>
                     </div>
                 </div>
             </div>
@@ -22,17 +22,30 @@
                                 {{ csrf_field() }}
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="name">Color Name <span style="color: red">*</span></label>
-                                        <input type="text" class="form-control" id="name" required value="{{ old('name') }}" name="name" placeholder="Color Name">
+                                        <label for="name">Discount Code<span style="color: red">*</span></label>
+                                        <input type="text" class="form-control" id="name" required value="{{ old('name') }}" name="name" placeholder="Discount Code">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="code">Color Code <span style="color: red">*</span></label>
-                                        <input type="color" class="form-control" id="code" required value="{{ old('code') }}" name="code" placeholder="Color Code">
+                                        <label for="type">Type<span style="color: red">*</span></label>
+                                        <select class="form-control" name="type" id="type" required>
+                                            <option {{ (old('type') == 'Amount') ? 'selected' : '' }} value="Amount">Amount</option>
+                                            <option {{ (old('type') == 'Percent') ? 'selected' : '' }} value="Percent">Percent</option>
+                                        </select>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="status">Status <span style="color: red">*</span></label>
+                                        <label for="percent_amount">Percent / Amount<span style="color: red">*</span></label>
+                                        <input type="text" class="form-control" id="percent_amount" required value="{{ old('percent_amount') }}" name="percent_amount" placeholder="Percent / Amount">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="expire_date">Expire Date<span style="color: red">*</span></label>
+                                        <input type="date" class="form-control" id="expire_date" required value="{{ old('expire_date') }}" name="expire_date">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="status">Status<span style="color: red">*</span></label>
                                         <select class="form-control" name="status" id="status" required>
                                             <option {{ (old('status') == 0) ? 'selected' : '' }} value="0">Active</option>
                                             <option {{ (old('status') == 1) ? 'selected' : '' }} value="1">Inactive</option>

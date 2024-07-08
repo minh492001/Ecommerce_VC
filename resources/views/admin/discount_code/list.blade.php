@@ -7,10 +7,10 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Color List</h1>
+                        <h1>Discount Code List</h1>
                     </div>
                     <div class="col-sm-6" style="text-align: right">
-                        <a href="{{ url('admin/color/add') }}" class="btn btn-primary">New Color</a>
+                        <a href="{{ url('admin/discount_code/add') }}" class="btn btn-primary">New Discount Code</a>
                     </div>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                         @include('admin.layouts._message')
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Color List</h3>
+                                <h3 class="card-title">Discount Code List</h3>
                             </div>
                             <div class="card-body p-0">
                                 <table class="table table-striped">
@@ -31,8 +31,9 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
-                                        <th>Code</th>
-                                        <th>Created By</th>
+                                        <th>Type</th>
+                                        <th>Percent / Amount</th>
+                                        <th>Expire Date</th>
                                         <th>Status</th>
                                         <th>Created Date</th>
                                         <th>Action</th>
@@ -43,13 +44,14 @@
                                         <tr>
                                             <td>{{ $value->id }}.</td>
                                             <td>{{ $value->name }}</td>
-                                            <td>{{ $value->code }}</td>
-                                            <td>{{ $value->created_by_name }}</td>
+                                            <td>{{ $value->type }}</td>
+                                            <td>{{ $value->percent_amount }}</td>
+                                            <td>{{ date('d-m-Y', strtotime($value->expire_date)) }}</td>
                                             <td>{{ ($value->status == 0) ? 'Active' : 'Inactive' }}</td>
                                             <td>{{ date('d-m-Y', strtotime($value->created_at)) }}</td>
                                             <td>
-                                                <a href="{{ url('admin/color/edit/'.$value->id ) }}" class="btn btn-primary">Edit</a>
-                                                <a href="{{ url('admin/color/delete/'.$value->id ) }}" class="btn btn-danger">Delete</a>
+                                                <a href="{{ url('admin/discount_code/edit/'.$value->id ) }}" class="btn btn-primary">Edit</a>
+                                                <a href="{{ url('admin/discount_code/delete/'.$value->id ) }}" class="btn btn-danger">Delete</a>
                                             </td>
                                         </tr>
                                     @endforeach
