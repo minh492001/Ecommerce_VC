@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DiscountCodeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
@@ -85,26 +86,30 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('admin/product/edit/{id}', [ProductController::class, 'edit']);
     Route::post('admin/product/edit/{id}', [ProductController::class, 'update']);
 
-//    Cart routes
-    Route::get('cart', [PaymentController::class, 'cart']);
-    Route::post('update_cart', [PaymentController::class, 'update_cart']);
-    Route::get('cart/delete/{id}', [PaymentController::class, 'cart_delete']);
-
 //    Delete Product Image
     Route::get('admin/product/image_delete/{id}', [ProductController::class, 'image_delete']);
 
-//    Home route
-    Route::get('/', [HomeController::class, 'home']);
-
-//    Search route
-    Route::get('search', [ProductFront::class, 'searchProduct']);
-
-//    Product with slug route
-    Route::get('{category?}/{subcategory?}', [ProductFront::class, 'getSlug']);
-
-//    Filters Product Listing route
-    Route::post('get_filter_product_ajax', [ProductFront::class, 'getFilterProduct']);
-
-//    Add to Cart route
-    Route::post('product/add-to-cart', [PaymentController::class, 'add_to_cart']);
 });
+
+//Home route
+Route::get('/', [HomeController::class, 'home']);
+
+//Product with slug route
+Route::get('{category?}/{subcategory?}', [ProductFront::class, 'getSlug']);
+
+//Filters Product Listing route
+Route::post('get_filter_product_ajax', [ProductFront::class, 'getFilterProduct']);
+
+//Search route
+Route::get('search', [ProductFront::class, 'searchProduct']);
+
+//Add to Cart route
+Route::post('product/add-to-cart', [PaymentController::class, 'add_to_cart']);
+
+//Cart routes
+Route::get('cart', [PaymentController::class, 'cart']);
+Route::post('update_cart', [PaymentController::class, 'update_cart']);
+Route::get('cart/delete/{id}', [PaymentController::class, 'cart_delete']);
+
+//Checkout route
+Route::get('checkout', [PaymentController::class, 'checkout']);
