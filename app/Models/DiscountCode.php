@@ -22,4 +22,13 @@ class DiscountCode extends Model
             ->orderBy('discount_code.id', 'desc')
             ->paginate(10);
     }
+
+    static public function checkDiscount($discount_code)
+    {
+        return self::select('discount_code.*')
+            ->where('discount_code.status', '=', 0)
+            ->where('discount_code.name', '=', $discount_code)
+            ->where('discount_code.expire_date', '>=', date('Y-m-d'))
+            ->first();
+    }
 }
