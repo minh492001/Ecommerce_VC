@@ -89,6 +89,17 @@ Route::group(['middleware' => 'admin'], function () {
 //    Delete Product Image
     Route::get('admin/product/image_delete/{id}', [ProductController::class, 'image_delete']);
 
+//    Discount Code routes
+    Route::get('admin/discount_code/list', [DiscountCodeController::class, 'list']);
+
+    Route::get('admin/discount_code/add', [DiscountCodeController::class, 'add']);
+    Route::post('admin/discount_code/add', [DiscountCodeController::class, 'insert']);
+
+    Route::get('admin/discount_code/edit/{id}', [DiscountCodeController::class, 'edit']);
+    Route::post('admin/discount_code/edit/{id}', [DiscountCodeController::class, 'update']);
+
+    Route::get('admin/discount_code/delete/{id}', [DiscountCodeController::class, 'delete']);
+
 });
 
 //Home route
