@@ -105,22 +105,23 @@ Route::group(['middleware' => 'admin'], function () {
 //Home route
 Route::get('/', [HomeController::class, 'home']);
 
-//Product with slug route
-Route::get('{category?}/{subcategory?}', [ProductFront::class, 'getSlug']);
-
-//Filters Product Listing route
-Route::post('get_filter_product_ajax', [ProductFront::class, 'getFilterProduct']);
-
-//Search route
-Route::get('search', [ProductFront::class, 'searchProduct']);
-
-//Add to Cart route
-Route::post('product/add-to-cart', [PaymentController::class, 'add_to_cart']);
-
 //Cart routes
 Route::get('cart', [PaymentController::class, 'cart']);
 Route::post('update_cart', [PaymentController::class, 'update_cart']);
 Route::get('cart/delete/{id}', [PaymentController::class, 'cart_delete']);
 
-//Checkout route
+//Checkout routes
 Route::get('checkout', [PaymentController::class, 'checkout']);
+Route::post('checkout/apply-discount-code', [PaymentController::class, 'apply_discount_code']);
+
+//Add to Cart route
+Route::post('product/add-to-cart', [PaymentController::class, 'add_to_cart']);
+
+//Search route
+Route::get('search', [ProductFront::class, 'searchProduct']);
+
+//Filters Product Listing route
+Route::post('get_filter_product_ajax', [ProductFront::class, 'getFilterProduct']);
+
+//Product with slug route
+Route::get('{category?}/{subcategory?}', [ProductFront::class, 'getSlug']);
