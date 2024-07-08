@@ -22,8 +22,8 @@
                                 {{ csrf_field() }}
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="name">Brand Name <span style="color: red">*</span></label>
-                                        <input type="text" class="form-control" id="name" required value="{{ old('name', $getRecord->name) }}" name="name" placeholder="Brand Name">
+                                        <label for="name">Color Name <span style="color: red">*</span></label>
+                                        <input type="text" class="form-control" id="name" required value="{{ old('name', $getRecord->name) }}" name="name" placeholder="Color Name">
                                     </div>
 
                                     <div class="form-group">
