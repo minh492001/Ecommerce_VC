@@ -1,10 +1,9 @@
 <?php
 
-use App\Http\Controllers\Admin\DiscountCodeController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+
+use App\Http\Controllers\Admin\DiscountCodeController;
+use App\Http\Controllers\Admin\ShippingChargeController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -12,6 +11,10 @@ use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ColorController;
+
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController as ProductFront;
 
 Route::get('admin', [AuthController::class, 'login_admin']);
@@ -99,6 +102,17 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('admin/discount_code/edit/{id}', [DiscountCodeController::class, 'update']);
 
     Route::get('admin/discount_code/delete/{id}', [DiscountCodeController::class, 'delete']);
+
+//    Shipping Charge routes
+    Route::get('admin/shipping_charges/list', [ShippingChargeController::class, 'list']);
+
+    Route::get('admin/shipping_charges/add', [ShippingChargeController::class, 'add']);
+    Route::post('admin/shipping_charges/add', [ShippingChargeController::class, 'insert']);
+
+    Route::get('admin/shipping_charges/edit/{id}', [ShippingChargeController::class, 'edit']);
+    Route::post('admin/shipping_charges/edit/{id}', [ShippingChargeController::class, 'update']);
+
+    Route::get('admin/shipping_charges/delete/{id}', [ShippingChargeController::class, 'delete']);
 
 });
 
