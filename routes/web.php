@@ -119,6 +119,12 @@ Route::group(['middleware' => 'admin'], function () {
 //Home route
 Route::get('/', [HomeController::class, 'home']);
 
+//User Login
+Route::post('login', [AuthController::class, 'login']);
+
+//User Logout
+Route::get('logout', [AuthController::class, 'logout']);
+
 //User Register
 Route::post('register', [AuthController::class, 'register']);
 
