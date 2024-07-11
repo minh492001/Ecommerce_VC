@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegisterMail;
 
 class AuthController extends Controller
 {
@@ -42,15 +44,26 @@ class AuthController extends Controller
             $user->name = trim($request->name);
             $user->email = trim($request->email);
             $user->password = Hash::make($request->password);
-
             $user->save();
 
+            Mail::to($user->email)->send(new RegisterMail($user));
+
             $json['status'] = true;
-            $json['message'] = 'Register successfully !';
+            $json['message'] = 'Register successfully. Please verify your email address !';
         } else {
             $json['status'] = false;
             $json['message'] = 'Email already exists !';
         }
         echo json_encode($json);
+    }
+
+    public function activate_email($id)
+    {
+        $id = base64_decode($id);
+        $user = User::getSingle($id);
+        $user->email_verified_at = date('Y-m-d H:i:s');
+        $user->save();
+
+        return redirect(url(''))->with('success', 'Email verified successfully');
     }
 }
