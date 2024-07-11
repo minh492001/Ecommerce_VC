@@ -36,6 +36,37 @@ class AuthController extends Controller
         return redirect('admin');
     }
 
+    public function login(Request $request)
+    {
+        $remember = !empty($request->is_remember) ? true : false;
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'status' => 0, 'is_delete' => 0], $remember))
+        {
+            if (!empty(Auth::user()->email_verified_at)) {
+                $json['status'] = true;
+                $json['message'] = 'Login successfully !';
+            } else {
+                $user = User::getSingle(Auth::user()->id);
+                Mail::to($user->email)->send(new RegisterMail($user));
+                Auth::logout();
+
+                $json['status'] = false;
+                $json['message'] = 'Email is not verified. Please verify your email address !';
+            }
+
+        } else {
+            $json['status'] = false;
+            $json['message'] = 'Please enter correct email or password !';
+        }
+
+        echo json_encode($json);
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect(url(''));
+    }
+
     public function register(Request $request)
     {
         $checkEmail = User::checkEmail($request->email);
