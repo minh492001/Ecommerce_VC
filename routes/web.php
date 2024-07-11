@@ -122,6 +122,9 @@ Route::get('/', [HomeController::class, 'home']);
 //User Register
 Route::post('register', [AuthController::class, 'register']);
 
+//Register Email Verify
+Route::get('activate/{id}', [AuthController::class, 'activate_email']);
+
 //Cart routes
 Route::get('cart', [PaymentController::class, 'cart']);
 Route::post('update_cart', [PaymentController::class, 'update_cart']);
