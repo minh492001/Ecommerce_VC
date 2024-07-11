@@ -54,15 +54,16 @@
                         </ul>
                         <div class="tab-content" id="tab-content-5">
                             <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
-                                <form action="#">
+                                <form action="" id="submitFormLogin" method="post">
+                                    {{ csrf_field() }}
                                     <div class="form-group">
-                                        <label for="singin-email">Username or email address *</label>
-                                        <input type="text" class="form-control" id="singin-email" name="singin-email" required>
+                                        <label for="email">Email Address <span style="color: red">*</span></label>
+                                        <input type="text" class="form-control" id="email" name="email" required>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-group">
-                                        <label for="singin-password">Password *</label>
-                                        <input type="password" class="form-control" id="singin-password" name="singin-password" required>
+                                        <label for="password">Password <span style="color: red">*</span></label>
+                                        <input type="password" class="form-control" id="password" name="password" required>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-footer">
@@ -72,7 +73,7 @@
                                         </button>
 
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="signin-remember">
+                                            <input type="checkbox" name="is_remember" class="custom-control-input" id="signin-remember">
                                             <label class="custom-control-label" for="signin-remember">Remember Me</label>
                                         </div><!-- End .custom-checkbox -->
 
@@ -82,15 +83,21 @@
 
                             </div><!-- .End .tab-pane -->
                             <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
-                                <form action="#">
+                                <form action="" id="submitFormRegister" method="post">
+                                    {{ csrf_field() }}
                                     <div class="form-group">
-                                        <label for="register-email">Your email address *</label>
-                                        <input type="email" class="form-control" id="register-email" name="register-email" required>
+                                        <label for="register-name">Name <span style="color:red">*</span></label>
+                                        <input type="text" class="form-control" id="register-name" name="name" required>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-group">
-                                        <label for="register-password">Password *</label>
-                                        <input type="password" class="form-control" id="register-password" name="register-password" required>
+                                        <label for="register-email">Email Address <span style="color:red">*</span></label>
+                                        <input type="email" class="form-control" id="register-email" name="email" required>
+                                    </div><!-- End .form-group -->
+
+                                    <div class="form-group">
+                                        <label for="register-password">Password <span style="color:red">*</span></label>
+                                        <input type="password" class="form-control" id="register-password" name="password" required>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-footer">
@@ -155,6 +162,47 @@
 @yield('script')
 <!-- Main JS File -->
 <script src="{{ url('assets/js/main.js') }}"></script>
+
+<script type="text/javascript">
+    $('body').delegate('#submitFormLogin', 'submit', function (e) {
+        e.preventDefault() // No need to refresh page
+        $.ajax({
+            type : "POST",
+            url : "{{ url('login') }}",
+            data : $(this).serialize(),
+            dataType : "json",
+            success : function (data) {
+                if(data.status == true) {
+                    location.reload()
+                } else {
+                    alert(data.message)
+                }
+            },
+            error : function (data) {
+
+            }
+        })
+    })
+
+    $('body').delegate('#submitFormRegister', 'submit', function (e) {
+        e.preventDefault() // No need to refresh page
+        $.ajax({
+            type : "POST",
+            url : "{{ url('register') }}",
+            data : $(this).serialize(),
+            dataType : "json",
+            success : function (data) {
+                alert(data.message)
+                if(data.status == true) {
+                    location.reload()
+                }
+            },
+            error : function (data) {
+
+            }
+        })
+    })
+</script>
 </body>
 
 </html>

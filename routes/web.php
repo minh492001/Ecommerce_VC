@@ -119,6 +119,18 @@ Route::group(['middleware' => 'admin'], function () {
 //Home route
 Route::get('/', [HomeController::class, 'home']);
 
+//User Login
+Route::post('login', [AuthController::class, 'login']);
+
+//User Logout
+Route::get('logout', [AuthController::class, 'logout']);
+
+//User Register
+Route::post('register', [AuthController::class, 'register']);
+
+//Register Email Verify
+Route::get('activate/{id}', [AuthController::class, 'activate_email']);
+
 //Cart routes
 Route::get('cart', [PaymentController::class, 'cart']);
 Route::post('update_cart', [PaymentController::class, 'update_cart']);
