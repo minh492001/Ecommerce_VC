@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -31,5 +32,25 @@ class AuthController extends Controller
     {
         Auth::logout();
         return redirect('admin');
+    }
+
+    public function register(Request $request)
+    {
+        $checkEmail = User::checkEmail($request->email);
+        if (empty($checkEmail)) {
+            $user = new User;
+            $user->name = trim($request->name);
+            $user->email = trim($request->email);
+            $user->password = Hash::make($request->password);
+
+            $user->save();
+
+            $json['status'] = true;
+            $json['message'] = 'Register successfully !';
+        } else {
+            $json['status'] = false;
+            $json['message'] = 'Email already exists !';
+        }
+        echo json_encode($json);
     }
 }
