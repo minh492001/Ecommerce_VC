@@ -82,15 +82,21 @@
 
                             </div><!-- .End .tab-pane -->
                             <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
-                                <form action="#">
+                                <form action="" id="submitFormRegister" method="post">
+                                    {{ csrf_field() }}
                                     <div class="form-group">
-                                        <label for="register-email">Your email address *</label>
-                                        <input type="email" class="form-control" id="register-email" name="register-email" required>
+                                        <label for="register-name">Name <span style="color:red">*</span></label>
+                                        <input type="text" class="form-control" id="register-name" name="name" required>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-group">
-                                        <label for="register-password">Password *</label>
-                                        <input type="password" class="form-control" id="register-password" name="register-password" required>
+                                        <label for="register-email">Email address <span style="color:red">*</span></label>
+                                        <input type="email" class="form-control" id="register-email" name="email" required>
+                                    </div><!-- End .form-group -->
+
+                                    <div class="form-group">
+                                        <label for="register-password">Password <span style="color:red">*</span></label>
+                                        <input type="password" class="form-control" id="register-password" name="password" required>
                                     </div><!-- End .form-group -->
 
                                     <div class="form-footer">
@@ -155,6 +161,27 @@
 @yield('script')
 <!-- Main JS File -->
 <script src="{{ url('assets/js/main.js') }}"></script>
+
+<script type="text/javascript">
+    $('body').delegate('#submitFormRegister', 'submit', function (e) {
+        e.preventDefault() // No need to refresh page
+        $.ajax({
+            type : "POST",
+            url : "{{ url('register') }}",
+            data : $(this).serialize(),
+            dataType : "json",
+            success : function (data) {
+                alert(data.message)
+                if(data.status == true) {
+                    location.reload()
+                }
+            },
+            error : function (data) {
+
+            }
+        })
+    })
+</script>
 </body>
 
 </html>
