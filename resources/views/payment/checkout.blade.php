@@ -132,17 +132,33 @@
                                             <td>Discount:</td>
                                             <td>$<span id="getDiscountAmount">0.00</span></td>
                                         </tr>
-                                        <tr>
+                                        <tr class="summary-shipping">
                                             <td>Shipping:</td>
-                                            <td>Free shipping</td>
+                                            <td>&nbsp;</td>
                                         </tr>
+
+                                        @foreach($getShipping as $shipping)
+                                        <tr class="summary-shipping-row">
+                                            <td>
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="free-shipping{{ $shipping->id }}" name="shipping" data-price="{{ !empty($shipping->price) ? $shipping->price : 0 }}" class="custom-control-input getShippingCharge">
+                                                    <label class="custom-control-label" for="free-shipping{{ $shipping->id }}">{{ $shipping->name }}</label>
+                                                </div><!-- End .custom-control -->
+                                            </td>
+                                            <td>
+                                                ${{ number_format($shipping->price, 2) }}
+                                            </td>
+                                        </tr><!-- End .summary-shipping-row -->
+                                        @endforeach
+
                                         <tr class="summary-total">
                                             <td>Total:</td>
                                             <td>$<span id="getPayableTotal">{{ number_format(Cart::getSubTotal(), 2) }}</span></td>
                                         </tr><!-- End .summary-total -->
                                         </tbody>
                                     </table><!-- End .table table-summary -->
-
+                                    <input type="hidden" id="getShippingCharge" value="0">
+                                    <input type="hidden" id="PayableTotal" value="{{ Cart::getSubTotal() }}">
                                     <div class="accordion-summary" id="accordion-payment">
                                         <div class="card">
                                             <div class="card-header" id="heading-3">
@@ -205,6 +221,13 @@
 
 @section('script')
     <script type="text/javascript">
+        $('body').delegate('.getShippingCharge', 'change', function () {
+            let price = $(this).attr('data-price')
+            let total = $('#PayableTotal').val()
+            $('#getShippingCharge').val(price)
+            let final_total = parseFloat(price) + parseFloat(total)
+            $('#getPayableTotal').html(final_total.toFixed(2))
+        });
         $('body').delegate('#ApplyDiscount', 'click', function () {
             let discount_code = $('#getDiscountCode').val();
 
@@ -218,7 +241,11 @@
                 dataType : "json",
                 success : function (data) {
                     $('#getDiscountAmount').html(data.discount_amount)
-                    $('#getPayableTotal').html(data.payable_total)
+                    let shipping = $('#getShippingCharge').val()
+                    let final_total = parseFloat(shipping) + parseFloat(data.payable_total)
+                    $('#getPayableTotal').html(final_total.toFixed(2))
+                    $('#PayableTotal').val(data.payable_total)
+
                     if(data.status == false) {
                         alert(data.message)
                     }

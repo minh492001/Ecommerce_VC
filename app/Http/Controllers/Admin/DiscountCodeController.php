@@ -38,7 +38,7 @@ class DiscountCodeController extends Controller
     public function edit($id)
     {
         $data['getRecord'] = DiscountCode::getSingle($id);
-        $data['header_title'] = 'Edit Color';
+        $data['header_title'] = 'Edit Discount Code';
         return view('admin.discount_code.edit', $data);
     }
 

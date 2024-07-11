@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\ShippingCharge;
 use Cart;
 use Illuminate\Http\Request;
 
@@ -46,6 +46,7 @@ class PaymentController extends Controller
         $data['meta_title'] = 'Checkout';
         $data['meta_description'] = '';
         $data['meta_keywords'] = '';
+        $data['getShipping'] = ShippingCharge::getRecordActive();
 
         return view('payment.checkout', $data);
     }
@@ -64,12 +65,12 @@ class PaymentController extends Controller
             }
             $json['status'] = true;
             $json['discount_amount'] = number_format($discount_amount, 2);
-            $json['payable_total'] = number_format($payable_total, 2);
+            $json['payable_total'] = $payable_total;
             $json['message'] = "Success";
         } else {
             $json['status'] = false;
             $json['discount_amount'] = number_format(0, 2);
-            $json['payable_total'] = number_format(Cart::getSubTotal(), 2);
+            $json['payable_total'] = Cart::getSubTotal();
             $json['message'] = "Discount Code Invalid !";
         }
 
