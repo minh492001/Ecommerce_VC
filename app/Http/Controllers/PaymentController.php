@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Color;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\ShippingCharge;
 use Cart;
 use Illuminate\Http\Request;
@@ -34,7 +37,7 @@ class PaymentController extends Controller
             'quantity' => $request->qty,
             'attributes' => [
                 'size_id' => $size_id,
-                '$color_id' => $color_id,
+                'color_id' => $color_id,
             ]
         ]);
 
