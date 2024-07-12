@@ -23,71 +23,74 @@
         <div class="page-content">
             <div class="checkout">
                 <div class="container">
-                    <form action="#">
+                    <form action="" id="SubmitForm" method="post">
+                        {{ csrf_field() }}
                         <div class="row">
                             <div class="col-lg-9">
                                 <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <label>First Name *</label>
-                                        <input type="text" class="form-control" required>
+                                        <label>First Name <span style="color: red">*</span></label>
+                                        <input type="text" name="first_name" class="form-control" required>
                                     </div><!-- End .col-sm-6 -->
 
                                     <div class="col-sm-6">
-                                        <label>Last Name *</label>
-                                        <input type="text" class="form-control" required>
+                                        <label>Last Name <span style="color: red">*</span></label>
+                                        <input type="text" name="last_name" class="form-control" required>
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
 
-                                <label>Company Name (Optional)</label>
-                                <input type="text" class="form-control">
+                                <label>Company Name (Optional) </label>
+                                <input type="text" name="company_name" class="form-control">
 
-                                <label>Country *</label>
-                                <input type="text" class="form-control" required>
+                                <label>Country <span style="color: red">*</span></label>
+                                <input type="text" name="country" class="form-control" required>
 
-                                <label>Street address *</label>
-                                <input type="text" class="form-control" placeholder="House number and Street name" required>
-                                <input type="text" class="form-control" placeholder="Appartments, suite, unit etc ..." required>
+                                <label>Street address <span style="color: red">*</span></label>
+                                <input type="text" name="address_one" class="form-control" placeholder="House number and Street name" required>
+                                <input type="text" name="address_two" class="form-control" placeholder="Appartments, suite, unit etc ..." required>
 
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <label>Town / City *</label>
-                                        <input type="text" class="form-control" required>
+                                        <label>Town / City <span style="color: red">*</span></label>
+                                        <input type="text" name="city" class="form-control" required>
                                     </div><!-- End .col-sm-6 -->
 
                                     <div class="col-sm-6">
-                                        <label>State / County *</label>
-                                        <input type="text" class="form-control" required>
+                                        <label>State <span style="color: red">*</span></label>
+                                        <input type="text" name="state" class="form-control" required>
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
 
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <label>Postcode / ZIP *</label>
-                                        <input type="text" class="form-control" required>
+                                        <label>Postcode / ZIP <span style="color: red">*</span></label>
+                                        <input type="text" name="postcode" class="form-control" required>
                                     </div><!-- End .col-sm-6 -->
 
                                     <div class="col-sm-6">
-                                        <label>Phone *</label>
-                                        <input type="tel" class="form-control" required>
+                                        <label>Phone <span style="color: red">*</span></label>
+                                        <input type="tel" name="phone" class="form-control" required>
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
 
-                                <label>Email address *</label>
-                                <input type="email" class="form-control" required>
+                                <label>Email address <span style="color: red">*</span></label>
+                                <input type="email" name="email" class="form-control" required>
 
+                                @if(empty(Auth::check()))
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="checkout-create-acc">
+                                    <input type="checkbox" name="is_create" class="custom-control-input createAccount" id="checkout-create-acc">
                                     <label class="custom-control-label" for="checkout-create-acc">Create an account?</label>
                                 </div><!-- End .custom-checkbox -->
 
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="checkout-diff-address">
-                                    <label class="custom-control-label" for="checkout-diff-address">Ship to a different address?</label>
-                                </div><!-- End .custom-checkbox -->
+                                <div id="showPassword" style="display: none">
+                                    <label>Password <span style="color: red">*</span></label>
+                                    <input type="text" id="inputPassword" name="password" class="form-control">
+                                </div>
+                                @endif
 
                                 <label>Order notes (optional)</label>
-                                <textarea class="form-control" cols="30" rows="4" placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
+                                <textarea class="form-control" name="note" cols="30" rows="4" placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
                             </div><!-- End .col-lg-9 -->
                             <aside class="col-lg-3">
                                 <div class="summary">
@@ -120,7 +123,7 @@
                                             <td colspan="2">
                                                 <div class="cart-discount">
                                                     <div class="input-group">
-                                                        <input id="getDiscountCode" type="text" class="form-control" placeholder="coupon code">
+                                                        <input id="getDiscountCode" name="discount_code" type="text" class="form-control" placeholder="coupon code">
                                                         <div class="input-group-append">
                                                             <button id="ApplyDiscount" style="height: 38px" type="button" class="btn btn-outline-primary-2"><i class="icon-long-arrow-right"></i></button>
                                                         </div><!-- .End .input-group-append -->
@@ -141,8 +144,8 @@
                                         <tr class="summary-shipping-row">
                                             <td>
                                                 <div class="custom-control custom-radio">
-                                                    <input type="radio" id="free-shipping{{ $shipping->id }}" name="shipping" data-price="{{ !empty($shipping->price) ? $shipping->price : 0 }}" class="custom-control-input getShippingCharge">
-                                                    <label class="custom-control-label" for="free-shipping{{ $shipping->id }}">{{ $shipping->name }}</label>
+                                                    <input type="radio" value="{{ $shipping->id }}" id="shipping-{{ $shipping->id }}" name="shipping" data-price="{{ !empty($shipping->price) ? $shipping->price : 0 }}" class="custom-control-input getShippingCharge" required>
+                                                    <label class="custom-control-label" for="shipping-{{ $shipping->id }}">{{ $shipping->name }}</label>
                                                 </div><!-- End .custom-control -->
                                             </td>
                                             <td>
@@ -160,49 +163,22 @@
                                     <input type="hidden" id="getShippingCharge" value="0">
                                     <input type="hidden" id="PayableTotal" value="{{ Cart::getSubTotal() }}">
                                     <div class="accordion-summary" id="accordion-payment">
-                                        <div class="card">
-                                            <div class="card-header" id="heading-3">
-                                                <h2 class="card-title">
-                                                    <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
-                                                        Cash on delivery
-                                                    </a>
-                                                </h2>
-                                            </div><!-- End .card-header -->
-                                            <div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-payment">
-                                                <div class="card-body">Quisque volutpat mattis eros. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros.
-                                                </div><!-- End .card-body -->
-                                            </div><!-- End .collapse -->
-                                        </div><!-- End .card -->
 
-                                        <div class="card">
-                                            <div class="card-header" id="heading-4">
-                                                <h2 class="card-title">
-                                                    <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
-                                                        PayPal <small class="float-right paypal-link">What is PayPal?</small>
-                                                    </a>
-                                                </h2>
-                                            </div><!-- End .card-header -->
-                                            <div id="collapse-4" class="collapse" aria-labelledby="heading-4" data-parent="#accordion-payment">
-                                                <div class="card-body">
-                                                    Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum.
-                                                </div><!-- End .card-body -->
-                                            </div><!-- End .collapse -->
-                                        </div><!-- End .card -->
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" value="cash" id="COD" name="payment_method" class="custom-control-input" required>
+                                            <label class="custom-control-label" for="COD">Cash on delivery</label>
+                                        </div><!-- End .custom-control -->
 
-                                        <div class="card">
-                                            <div class="card-header" id="heading-5">
-                                                <h2 class="card-title">
-                                                    <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
-                                                        Credit Card (Stripe)
-                                                        <img src="assets/images/payments-summary.png" alt="payments cards">
-                                                    </a>
-                                                </h2>
-                                            </div><!-- End .card-header -->
-                                            <div id="collapse-5" class="collapse" aria-labelledby="heading-5" data-parent="#accordion-payment">
-                                                <div class="card-body"> Donec nec justo eget felis facilisis fermentum.Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Lorem ipsum dolor sit ame.
-                                                </div><!-- End .card-body -->
-                                            </div><!-- End .collapse -->
-                                        </div><!-- End .card -->
+                                        <div class="custom-control custom-radio" style="margin-top: 0px">
+                                            <input type="radio" value="paypal" id="Paypal" name="payment_method" class="custom-control-input" required>
+                                            <label class="custom-control-label" for="Paypal">Paypal</label>
+                                        </div><!-- End .custom-control -->
+
+                                        <div class="custom-control custom-radio" style="margin-top: 0px">
+                                            <input type="radio" value="stripe" id="Credit Card" name="payment_method" class="custom-control-input" required>
+                                            <label class="custom-control-label" for="Credit Card">Credit Card (Stripe)</label>
+                                        </div><!-- End .custom-control -->
+                                        <img src="{{ url('assets/images/payments-summary.png') }}" alt="payments cards">
                                     </div><!-- End .accordion -->
 
                                     <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
@@ -221,6 +197,36 @@
 
 @section('script')
     <script type="text/javascript">
+        $('body').delegate('.createAccount', 'change', function () {
+            if(this.checked) {
+                $('#showPassword').show()
+                $('#inputPassword').prop('required', true)
+            } else {
+                $('#showPassword').hide()
+                $('#inputPassword').prop('required', false)
+            }
+        });
+
+        $('body').delegate('#SubmitForm', 'submit', function (e) {
+            e.preventDefault()
+            $.ajax({
+                type : "POST",
+                url : "{{ url('checkout/place_order') }}",
+                data : new FormData(this),
+                processData : false,
+                contentType : false,
+                dataType : "json",
+                success : function (data) {
+                    if(data.status == false) {
+                        alert(data.message)
+                    }
+                },
+                error : function (data) {
+
+                }
+            })
+        })
+
         $('body').delegate('.getShippingCharge', 'change', function () {
             let price = $(this).attr('data-price')
             let total = $('#PayableTotal').val()
@@ -228,6 +234,7 @@
             let final_total = parseFloat(price) + parseFloat(total)
             $('#getPayableTotal').html(final_total.toFixed(2))
         });
+
         $('body').delegate('#ApplyDiscount', 'click', function () {
             let discount_code = $('#getDiscountCode').val();
 
