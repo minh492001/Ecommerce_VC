@@ -15,4 +15,12 @@ class Order extends Model
     {
         return self::find($order_id);
     }
+
+    static public function getRecord()
+    {
+        return self::select('orders.*')
+            ->where('is_payment', '=', 1)
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+    }
 }
