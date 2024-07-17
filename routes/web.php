@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ColorController;
+use App\Http\Controllers\Admin\OrderController;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
@@ -22,6 +23,7 @@ Route::post('admin', [AuthController::class, 'auth_login_admin']);
 Route::get('admin/logout', [AuthController::class, 'logout_admin']);
 
 Route::group(['middleware' => 'admin'], function () {
+//    Admin routes
     Route::get('admin/dashboard', [DashboardController::class, 'dashboard']);
 
     Route::get('admin/admin/list', [AdminController::class, 'list']);
@@ -33,6 +35,9 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('admin/admin/edit/{id}', [AdminController::class, 'update']);
 
     Route::get('admin/admin/delete/{id}', [AdminController::class, 'delete']);
+
+//    Order routes
+    Route::get('admin/orders/list', [OrderController::class, 'list']);
 
 //    Category routes
     Route::get('admin/category/list', [CategoryController::class, 'list']);
