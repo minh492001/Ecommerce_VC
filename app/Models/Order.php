@@ -23,4 +23,14 @@ class Order extends Model
             ->orderBy('id', 'desc')
             ->paginate(10);
     }
+
+    public function getShipping()
+    {
+        return $this->belongsTo(ShippingCharge::class, 'shipping_id');
+    }
+
+    public function getItem()
+    {
+        return $this->hasMany(OrderItem::class, 'order_id');
+    }
 }
