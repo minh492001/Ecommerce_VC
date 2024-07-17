@@ -10,4 +10,17 @@ class Order extends Model
     use HasFactory;
 
     protected $table = 'orders';
+
+    static public function getSingle($order_id)
+    {
+        return self::find($order_id);
+    }
+
+    static public function getRecord()
+    {
+        return self::select('orders.*')
+            ->where('is_payment', '=', 1)
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+    }
 }

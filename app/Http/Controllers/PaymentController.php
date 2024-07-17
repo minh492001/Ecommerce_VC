@@ -215,10 +215,58 @@ class PaymentController extends Controller
             }
             $json['status'] = true;
             $json['message'] = 'Order placed successfully !';
+            $json['redirect'] = url('checkout/payment?order_id='.base64_encode($order->id));
         } else {
             $json['status'] = false;
             $json['message'] = $message;
         }
         echo json_encode($json);
+    }
+
+    public function payment(Request $request)
+    {
+        if (!empty(Cart::getSubTotal()) && !empty($request->order_id)) {
+            $order_id = base64_decode($request->order_id);
+            $getOrder = Order::getSingle($order_id);
+            if (!empty($getOrder)) {
+                if ($getOrder->payment_method == 'cash') {
+                    $getOrder->is_payment = 1;
+                    $getOrder->save();
+                    Cart::clear();
+
+                    return redirect('cart')->with('success', 'Order placed successfully !');
+                } elseif ($getOrder->payment_method == 'paypal') {
+                    $query = array();
+                    $query['business'] = "gow.bin.gg@gmail.com";
+                    $query['cmd'] = '_xclick';
+                    $query['item_name'] = 'E-commerce';
+                    $query['no_shipping'] = '1';
+                    $query['item_number'] = $getOrder->id;
+                    $query['amount'] = $getOrder->total_amount;
+                    $query['currency_code'] = 'VND';
+                    $query['cancel_return'] = url('checkout');
+                    $query['return'] = url('paypal/success-payment');
+
+                    $query_string = http_build_query($query);
+
+                    header('Location: https://www.sandbox.paypal.com/cgi-bin/webscr?' . $query_string);
+//                    header('Location: https://www.paypal.com/cgi-bin/webscr?' . $query_string);
+                    exit();
+                } elseif ($getOrder->payment_method == 'stripe') {
+
+                }
+            } else {
+                echo 'abc';
+            }
+        } else {
+            echo 'abc';
+        }
+    }
+
+    public function paypal_success(Request $request)
+    {
+        if (!empty($request->item_number) && !empty($request->st) && $request->st == 'Completed') {
+
+        }
     }
 }
