@@ -39,6 +39,9 @@ Route::group(['middleware' => 'admin'], function () {
 //    Order routes
     Route::get('admin/orders/list', [OrderController::class, 'list']);
 
+    Route::get('admin/orders/detail/{id}', [OrderController::class, 'detail']);
+
+
 //    Category routes
     Route::get('admin/category/list', [CategoryController::class, 'list']);
 
