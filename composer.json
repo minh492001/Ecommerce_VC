@@ -11,7 +11,7 @@
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "maatwebsite/excel": "^1.1",
-        "stripe/stripe-php": "^14.9",
+        "stripe/stripe-php": "^15.2",
         "darryldecode/cart": "dev-master"
     },
     "repositories": {

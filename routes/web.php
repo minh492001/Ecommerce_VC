@@ -149,7 +149,8 @@ Route::get('checkout', [PaymentController::class, 'checkout']);
 Route::post('checkout/apply-discount-code', [PaymentController::class, 'apply_discount_code']);
 Route::post('checkout/place_order', [PaymentController::class, 'place_order']);
 Route::get('checkout/payment', [PaymentController::class, 'payment']);
-Route::get('paypal/success-payment', [PaymentController::class, 'paypal_success']);
+Route::get('paypal/payment-success', [PaymentController::class, 'paypal_success']);
+Route::get('stripe/payment-success', [PaymentController::class, 'stripe_success']);
 
 //Add to Cart route
 Route::post('product/add-to-cart', [PaymentController::class, 'add_to_cart']);
