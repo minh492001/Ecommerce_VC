@@ -7,14 +7,16 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\ShippingCharge;
 use App\Models\User;
-use Cart;
-use Illuminate\Http\Request;
-
 use App\Models\Product;
 use App\Models\ProductSize;
 use App\Models\DiscountCode;
+
+use Cart;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use Stripe\Stripe;
 
 class PaymentController extends Controller
 {
@@ -245,7 +247,7 @@ class PaymentController extends Controller
                     $query['amount'] = $getOrder->total_amount;
                     $query['currency_code'] = 'VND';
                     $query['cancel_return'] = url('checkout');
-                    $query['return'] = url('paypal/success-payment');
+                    $query['return'] = url('paypal/payment-success');
 
                     $query_string = http_build_query($query);
 
@@ -253,7 +255,35 @@ class PaymentController extends Controller
 //                    header('Location: https://www.paypal.com/cgi-bin/webscr?' . $query_string);
                     exit();
                 } elseif ($getOrder->payment_method == 'stripe') {
+                    Stripe::setApiKey(env('STRIPE_SECRET'));
+                    $final_price = $getOrder->total_amount * 100;
 
+                    $session = \Stripe\Checkout\Session::create([
+                        'customer_email' => $getOrder->email,
+                        'payment_method_types' => ['card'],
+                        'line_items' => [[
+                            'price_data' => [
+                                'currency' => 'usd',
+                                'product_data' => [
+                                    'name' => 'E-commerce_VC',
+                                ],
+                                'unit_amount' => intval($final_price),
+                            ],
+                            'quantity' => 1,
+                        ]],
+                        'mode' => 'payment',
+                        'success_url' => url('stripe/payment-success'),
+                        'cancel_url' => url('checkout'),
+                    ]);
+
+                    $getOrder->stripe_session_id = $session['id'];
+                    $getOrder->save();
+
+                    $data['session_id'] = $session['id'];
+                    Session::put('stripe_session_id', $session['id']);
+                    $data['setPublicKey'] = env('STRIPE_KEY');
+
+                    return view('payment.stripe_charge', $data);
                 }
             } else {
                 echo 'abc';
@@ -267,6 +297,26 @@ class PaymentController extends Controller
     {
         if (!empty($request->item_number) && !empty($request->st) && $request->st == 'Completed') {
 
+        }
+    }
+
+    public function stripe_success(Request $request)
+    {
+        $trans_id = Session::get('stripe_session_id');
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+        $getData = \Stripe\Checkout\Session::retrieve($trans_id);
+
+        $getOrder = Order::where('stripe_session_id', '=', $getData->id)->first();
+        if (!empty($getOrder) && !empty($getData->id) && $getData->id == $getOrder->stripe_session_id) {
+            $getOrder->is_payment = 1;
+            $getOrder->transaction_id = $getData->id;
+            $getOrder->payment_data = json_encode($getData);
+            $getOrder->save();
+            Cart::clear();
+
+            return redirect('cart')->with('success', 'Order placed successfully !');
+        } else {
+            return redirect('cart')->with('error', 'Error ! Please try again .');
         }
     }
 }
