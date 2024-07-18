@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderInvoiceMail;
+use App\Mail\RegisterMail;
 use App\Models\Color;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -15,6 +17,7 @@ use Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Stripe\Stripe;
 
@@ -173,6 +176,7 @@ class PaymentController extends Controller
             if (!empty($user_id)) {
                 $order->user_id = trim($user_id);
             }
+            $order->order_number = mt_rand(10000000, 99999999);
             $order->first_name = trim($request->first_name);
             $order->last_name = trim($request->last_name);
             $order->company_name = trim($request->company_name);
@@ -212,7 +216,7 @@ class PaymentController extends Controller
                     $order_item->size_name = $getSize->name;
                     $order_item->size_amount = $getSize->price;
                 }
-                $order_item->total_price = $cart->price;
+                $order_item->total_price = $cart->price * $cart->quantity;
                 $order_item->save();
             }
             $json['status'] = true;
@@ -302,6 +306,8 @@ class PaymentController extends Controller
                 $getOrder->transaction_id = $request->tx;
                 $getOrder->payment_data = json_encode($request->all());
                 $getOrder->save();
+
+                Mail::to($getOrder->email)->send(new OrderInvoiceMail($getOrder));
                 Cart::clear();
 
                 return redirect('cart')->with('success', 'Order placed successfully !');
@@ -325,6 +331,8 @@ class PaymentController extends Controller
             $getOrder->transaction_id = $getData->id;
             $getOrder->payment_data = json_encode($getData);
             $getOrder->save();
+
+            Mail::to($getOrder->email)->send(new OrderInvoiceMail($getOrder));
             Cart::clear();
 
             return redirect('cart')->with('success', 'Order placed successfully !');
