@@ -239,13 +239,13 @@ class PaymentController extends Controller
                     return redirect('cart')->with('success', 'Order placed successfully !');
                 } elseif ($getOrder->payment_method == 'paypal') {
                     $query = array();
-                    $query['business'] = "gow.bin.gg@gmail.com";
+                    $query['business'] = "vipulbusiness1@gmail.com";
                     $query['cmd'] = '_xclick';
-                    $query['item_name'] = 'E-commerce';
+                    $query['item_name'] = 'E-commerce_VC';
                     $query['no_shipping'] = '1';
                     $query['item_number'] = $getOrder->id;
                     $query['amount'] = $getOrder->total_amount;
-                    $query['currency_code'] = 'VND';
+                    $query['currency_code'] = 'USD';
                     $query['cancel_return'] = url('checkout');
                     $query['return'] = url('paypal/payment-success');
 
@@ -286,17 +286,30 @@ class PaymentController extends Controller
                     return view('payment.stripe_charge', $data);
                 }
             } else {
-                echo 'abc';
+                abort(404);
             }
         } else {
-            echo 'abc';
+            abort(404);
         }
     }
 
     public function paypal_success(Request $request)
     {
         if (!empty($request->item_number) && !empty($request->st) && $request->st == 'Completed') {
+            $getOrder = Order::getSingle($request->item_number);
+            if (!empty($getOrder)){
+                $getOrder->is_payment = 1;
+                $getOrder->transaction_id = $request->tx;
+                $getOrder->payment_data = json_encode($request->all());
+                $getOrder->save();
+                Cart::clear();
 
+                return redirect('cart')->with('success', 'Order placed successfully !');
+            } else {
+                abort(404);
+            }
+        } else {
+            abort(404);
         }
     }
 
