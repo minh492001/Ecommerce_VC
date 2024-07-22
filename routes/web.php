@@ -136,6 +136,7 @@ Route::group(['middleware' => 'admin'], function () {
 //User Middleware
 Route::group(['middleware' => 'user'], function () {
     Route::get('user/dashboard', [UserController::class, 'dashboard']);
+    Route::get('user/orders', [UserController::class, 'orders']);
 });
 
 //Home route
