@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\CustomerController;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController as ProductFront;
 
@@ -23,6 +24,7 @@ Route::get('admin', [AuthController::class, 'login_admin']);
 Route::post('admin', [AuthController::class, 'auth_login_admin']);
 Route::get('admin/logout', [AuthController::class, 'logout_admin']);
 
+//Admin Middleware
 Route::group(['middleware' => 'admin'], function () {
 //    Admin routes
     Route::get('admin/dashboard', [DashboardController::class, 'dashboard']);
@@ -129,6 +131,11 @@ Route::group(['middleware' => 'admin'], function () {
 
     Route::get('admin/shipping_charges/delete/{id}', [ShippingChargeController::class, 'delete']);
 
+});
+
+//User Middleware
+Route::group(['middleware' => 'user'], function () {
+    Route::get('user/dashboard', [UserController::class, 'dashboard']);
 });
 
 //Home route
