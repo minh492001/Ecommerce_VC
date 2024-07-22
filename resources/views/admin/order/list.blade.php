@@ -160,7 +160,7 @@
                                             <td>
                                                 <select class="form-control changeStatus" id="{{ $value->id }}" style="width: 130px">
                                                     <option {{ ($value->status == 0) ? 'selected' : '' }} value="0">Pending</option>
-                                                    <option {{ ($value->status == 1) ? 'selected' : '' }} value="1">Inprogress</option>
+                                                    <option {{ ($value->status == 1) ? 'selected' : '' }} value="1">In Progress</option>
                                                     <option {{ ($value->status == 2) ? 'selected' : '' }} value="2">Delivered</option>
                                                     <option {{ ($value->status == 3) ? 'selected' : '' }} value="3">Completed</option>
                                                     <option {{ ($value->status == 4) ? 'selected' : '' }} value="4">Cancelled</option>
