@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderStatusMail;
 
 class OrderController extends Controller
 {
@@ -27,6 +29,8 @@ class OrderController extends Controller
         $getOrder = Order::getSingle($request->order_id);
         $getOrder->status = $request->status;
         $getOrder->save();
+
+        Mail::to($getOrder->email)->send(new OrderStatusMail($getOrder));
 
         $json['message'] = 'Status updated successfully';
         echo json_encode($json);

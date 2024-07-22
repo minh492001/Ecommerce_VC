@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Mail\OrderInvoiceMail;
-use App\Mail\RegisterMail;
 use App\Models\Color;
 use App\Models\Order;
 use App\Models\OrderItem;
