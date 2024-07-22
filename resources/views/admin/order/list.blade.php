@@ -118,6 +118,7 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>Order Number</th>
                                         <th>Name</th>
                                         <th>Company Name</th>
                                         <th>Country</th>
@@ -141,6 +142,7 @@
                                     @foreach($getRecord as $value)
                                         <tr>
                                             <td>{{ $value->id }}.</td>
+                                            <td>{{ $value->order_number }}</td>
                                             <td>{{ $value->first_name }} {{ $value->last_name }}</td>
                                             <td>{{ $value->company_name }}</td>
                                             <td>{{ $value->country }}</td>
@@ -155,7 +157,15 @@
                                             <td>{{ number_format($value->shipping_amount, 2) }}</td>
                                             <td>{{ number_format($value->total_amount, 2) }}</td>
                                             <td style="text-transform: capitalize">{{ $value->payment_method }}</td>
-                                            <td>{{ ($value->status == 0) ? 'Active' : 'Inactive' }}</td>
+                                            <td>
+                                                <select class="form-control changeStatus" id="{{ $value->id }}" style="width: 130px">
+                                                    <option {{ ($value->status == 0) ? 'selected' : '' }} value="0">Pending</option>
+                                                    <option {{ ($value->status == 1) ? 'selected' : '' }} value="1">Inprogress</option>
+                                                    <option {{ ($value->status == 2) ? 'selected' : '' }} value="2">Delivered</option>
+                                                    <option {{ ($value->status == 3) ? 'selected' : '' }} value="3">Completed</option>
+                                                    <option {{ ($value->status == 4) ? 'selected' : '' }} value="4">Cancelled</option>
+                                                </select>
+                                            </td>
                                             <td>{{ date('d-m-Y h:i A', strtotime($value->created_at)) }}</td>
                                             <td>
                                                 <a href="{{ url('admin/orders/detail/'.$value->id ) }}" class="btn btn-primary">Detail</a>
@@ -179,6 +189,23 @@
 @endsection
 
 @section('script')
-
+    <script type="text/javascript">
+        $('body').delegate('.changeStatus', 'change', function () {
+            let status = $(this).val()
+            let order_id = $(this).attr('id')
+            $.ajax({
+                type : "GET",
+                url : "{{ url('admin/order-status') }}",
+                data : {
+                    status : status,
+                    order_id : order_id
+                },
+                dataType : "json",
+                success : function (data) {
+                    alert(data.message)
+                }
+            })
+        })
+    </script>
 @endsection
 
