@@ -41,6 +41,7 @@ Route::group(['middleware' => 'admin'], function () {
 
     Route::get('admin/orders/detail/{id}', [OrderController::class, 'detail']);
 
+    Route::get('admin/order-status', [OrderController::class, 'order_status']);
 
 //    Category routes
     Route::get('admin/category/list', [CategoryController::class, 'list']);
