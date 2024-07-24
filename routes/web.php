@@ -144,6 +144,7 @@ Route::group(['middleware' => 'user'], function () {
     Route::post('user/edit-profile', [UserController::class, 'update_profile']);
 
     Route::get('user/change-password', [UserController::class, 'change_password']);
+    Route::post('user/change-password', [UserController::class, 'update_password']);
 });
 
 //Home route
