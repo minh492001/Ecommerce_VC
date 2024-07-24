@@ -29,6 +29,10 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label>Transaction ID : <span style="font-weight: normal">{{ $getRecord->transaction_id }}</span></label>
+                                </div>
+
+                                <div class="form-group">
                                     <label>Name : <span style="font-weight: normal">{{ $getRecord->first_name }} {{ $getRecord->last_name }}</label>
                                 </div>
 
@@ -89,7 +93,20 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label>Status : </label>
+                                    <label>
+                                        Status :
+                                        @if($getRecord->status == 0)
+                                            Pending
+                                        @elseif($getRecord->status == 1)
+                                            In Progress
+                                        @elseif($getRecord->status == 2)
+                                            Delivered
+                                        @elseif($getRecord->status == 3)
+                                            Completed
+                                        @elseif($getRecord->status == 4)
+                                            Cancelled
+                                        @endif
+                                    </label>
                                 </div>
 
                                 <div class="form-group">
@@ -137,11 +154,11 @@
                                                     <a target="_blank" href="{{ url($item->getProduct->slug) }}">{{ $item->getProduct->title }}</a>
                                                 </td>
                                                 <td>{{ $item->quantity }}</td>
-                                                <td>{{ $item->price }}</td>
+                                                <td>${{ number_format($item->price, 2) }}</td>
                                                 <td>{{ $item->color_name }}</td>
                                                 <td>{{ $item->size_name }}</td>
-                                                <td>{{ number_format($item->size_amount, 2) }}</td>
-                                                <td>{{ number_format($item->total_price, 2) }}</td>
+                                                <td>${{ number_format($item->size_amount, 2) }}</td>
+                                                <td>${{ number_format($item->total_price, 2) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
