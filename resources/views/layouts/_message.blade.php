@@ -21,3 +21,15 @@
         {{ session('warning') }}
     </div>
 @endif
+
+@if(!empty(session('secondary')))
+    <div class="alert alert-secondary" role="alert">
+        {{ session('secondary') }}
+    </div>
+@endif
+
+@if(!empty(session('primary')))
+    <div class="alert alert-primary" role="alert">
+        {{ session('primary') }}
+    </div>
+@endif
