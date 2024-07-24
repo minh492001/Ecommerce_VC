@@ -17,6 +17,15 @@ class Order extends Model
         return self::find($order_id);
     }
 
+    static public function getSingleCustomer($user_id, $id)
+    {
+        return self::select('orders.*')
+            ->where('user_id', '=', $user_id)
+            ->where('id', '=', $id)
+            ->where('is_payment', '=', 1)
+            ->first();
+    }
+
     static public function getTotalOrder($user_id)
     {
         return self::select('id')
@@ -58,6 +67,15 @@ class Order extends Model
             ->where('status', '=', $status)
             ->where('is_payment', '=', 1)
             ->count();
+    }
+
+    static public function getRecordCustomer($user_id)
+    {
+        return self::select('orders.*')
+            ->where('user_id', '=', $user_id)
+            ->where('is_payment', '=', 1)
+            ->orderBy('id', 'desc')
+            ->paginate(10);
     }
 
     static public function getRecord()
